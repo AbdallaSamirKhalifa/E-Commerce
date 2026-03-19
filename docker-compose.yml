@@ -12,7 +12,7 @@ services:
 
     volumes:
       - postgres-data:/var/lib/postgresql/data
-      - /src/main/resources/schema.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./src/main/resources/schema.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - e-commerce-network
 
