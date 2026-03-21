@@ -1,8 +1,8 @@
 -- 1. Identity Domain
 CREATE TABLE IF NOT EXISTS Users (
     user_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    user_first_name VARCHAR(100),
-    user_last_name VARCHAR(100),
+    user_first_name VARCHAR(100) NOT NULL,
+    user_last_name VARCHAR(100) NOT NULL,
     user_email VARCHAR(150) UNIQUE NOT NULL,
     user_password VARCHAR(255) NOT NULL
 );
@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS customer_addresse (
     label VARCHAR(20) NOT NULL,
     city VARCHAR(20) NOT NULL,
     street VARCHAR(100) NOT NULL,
-    notes VARCHAR(250) NOT NULL
+    notes VARCHAR(250)
 );
 
 -- 2. Catalog Domain

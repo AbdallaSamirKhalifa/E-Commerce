@@ -26,11 +26,15 @@ public class OrderItem {
     @JoinColumn(name = "prod_id", nullable = false)
     private Product product;
 
-    @Column(name = "qty")
-    private Integer qty;
+    @Column(name = "qty",check = @CheckConstraint(
+            name = "CHK_Order_Item_Quantity",
+            constraint = "quantity > 0"
+    )
+    )
+    private Integer quantity;
 
-    @Column(name = "price", nullable = false)
-    private BigDecimal price; // This stores the price at the moment of purchase
+    @Column(name = "price", nullable = false, precision = 10,scale = 2)
+    private BigDecimal price;
 
 
 }

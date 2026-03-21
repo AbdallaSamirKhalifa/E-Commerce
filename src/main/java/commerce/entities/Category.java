@@ -23,10 +23,10 @@ public class Category {
     @Column(name = "cat_id")
     private Integer id;
 
-    @Column(name = "cat_name", nullable = false)
+    @Column(name = "cat_name", nullable = false,length = 100)
     private String name;
 
-    @OneToMany(mappedBy = "category")
+    @OneToMany(mappedBy = "category",cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Product> products;
 
 

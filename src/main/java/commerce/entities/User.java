@@ -18,16 +18,16 @@ public class User {
     @Column(name = "user_id")
     private Integer userId;
 
-    @Column(name = "user_first_name")
+    @Column(name = "user_first_name",length = 100, nullable = false)
     private String firstName;
 
-    @Column(name = "user_last_name")
+    @Column(name = "user_last_name", length = 100, nullable = false)
     private String lastName;
 
-    @Column(name = "user_email", unique = true, nullable = false)
+    @Column(name = "user_email", unique = true, nullable = false,length = 150)
     private String email;
 
-    @Column(name = "user_password", nullable = false)
+    @Column(name = "user_password", nullable = false, length = 255)
     private String password;
 
     @Override

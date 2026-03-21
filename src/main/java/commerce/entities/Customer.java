@@ -32,14 +32,13 @@ public class Customer {
     @Column(name = "cust_id")
     private Integer id;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY,optional = false)
     @JoinColumn(name = "user_id", unique = true, nullable = false)
     private User user;
 
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<CustomerAddress> addresses;
-    @OneToMany(mappedBy = "customer")
-    private Set<Order> orders;
+
 
 
 }

@@ -22,14 +22,14 @@ public class Cart {
     @Column(name = "cart_id")
     private Integer cartId;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "cust_id", nullable = false)
     private Customer customer;
 
     @Column(name = "is_locked")
     private Boolean isLocked;
 
-    @OneToMany(mappedBy = "cart")
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<CartItem> cartItems;
 
 

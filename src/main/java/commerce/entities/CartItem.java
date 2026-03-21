@@ -16,15 +16,18 @@ public class CartItem {
     @Column(name = "cart_item_id")
     private Integer cartItemId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,optional = false)
     @JoinColumn(name = "cart_id")
     private Cart cart;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,optional = false)
     @JoinColumn(name = "prod_id", nullable = false)
     private Product product;
 
-    @Column(name = "qty")
+    @Column(name = "qty",check =@CheckConstraint(
+            name = "CHK_Cart_Item_Quantity",
+            constraint = "quantity > 0")
+    )
     private Integer quantity;
 
 
