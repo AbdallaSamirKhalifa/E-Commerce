@@ -44,6 +44,10 @@ This is a **Simple Showcase E-Commerce Application** intended to demonstrate a c
 - Fetching data lazily to avoid fetching unnecessary data
 - Using ***@NameEntityGraph*** to efficiently fetch data from the Database.
 
+### Repositories
+- Initial ***JPA*** repository.
+- Using ***JpaRepository*** for ***Paging and Sorting***.
+
 ---
 
 ## Contact & Contribution
