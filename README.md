@@ -1,4 +1,4 @@
-# 🛒 E-Commerce Simple Showcase
+# E-Commerce Simple Showcase
 
 This is a **Simple Showcase E-Commerce Application** intended to demonstrate a clean, layered backend architecture. While the initial setup is straightforward, the system is built with a **Scalable First** mindset, allowing for easy adding new features.
 
@@ -11,7 +11,7 @@ This is a **Simple Showcase E-Commerce Application** intended to demonstrate a c
 
 ---
 
-## 🛠️ Technology Stack
+## Technology Stack
 
 ### Current Implementation:
 
@@ -23,12 +23,26 @@ This is a **Simple Showcase E-Commerce Application** intended to demonstrate a c
 - **DevOps:** Docker & Docker Compose
 - **Build Tool:** Maven
 
-### 📈 Planned Roadmap (Future Enhancements):
+### Planned Roadmap (Future Enhancements):
 
 - **Security:** Integration of **Spring Security** with JWT for stateless authentication.
 - **Migrations:** **Liquibase** for version-controlled database schema management.
 - **Messaging:** **Spring SMTP** for automated order confirmation and registration emails.
 - **Caching:** Redis integration for product catalog performance.
+
+---
+
+## Documentation
+
+### Exceptions
+
+- Using ***GlobalExceptionHandler*** for centralized exception handling 
+- Creating initial exceptions for ***Clear and Documented*** API responses
+
+### Entities
+- Initial required entities for the project
+- Fetching data lazily to avoid fetching unnecessary data
+- Using ***@NameEntityGraph*** to efficiently fetch data from the Database.
 
 ---
 
