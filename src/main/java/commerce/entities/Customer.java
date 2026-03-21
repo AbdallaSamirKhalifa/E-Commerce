@@ -1,0 +1,45 @@
+package commerce.entities;
+
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.Set;
+
+@Entity
+@Table(name = "customer")
+@Getter
+@Setter
+@NoArgsConstructor
+@NamedEntityGraphs(
+        {
+                @NamedEntityGraph(
+                        name = "Customer.addresses",
+                        attributeNodes = @NamedAttributeNode("addresses")
+                ),
+                @NamedEntityGraph(
+                        name = "Customer.orders",
+                        attributeNodes = @NamedAttributeNode("orders")
+                )
+        }
+)
+
+
+public class Customer {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "cust_id")
+    private Integer id;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", unique = true, nullable = false)
+    private User user;
+
+    @OneToMany(mappedBy = "customer")
+    private Set<CustomerAddress> addresses;
+    @OneToMany(mappedBy = "customer")
+    private Set<Order> orders;
+
+
+}
