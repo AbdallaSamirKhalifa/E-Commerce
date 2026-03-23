@@ -1,4 +1,5 @@
 -- 1. Identity Domain
+CREATE DATABASE e_commerce
 CREATE TABLE IF NOT EXISTS Users (
     user_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     user_first_name VARCHAR(100) NOT NULL,
@@ -12,7 +13,7 @@ CREATE TABLE IF NOT EXISTS customer(
     user_id INT UNIQUE NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS customer_addresse (
+CREATE TABLE IF NOT EXISTS customer_addresses (
     address_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     cust_id INT NOT NULL, -- References customer(cust_id),
     label VARCHAR(20) NOT NULL,
@@ -58,7 +59,7 @@ CREATE TABLE IF NOT EXISTS Orders (
     ord_note VARCHAR(500)
 );
 
-CREATE TABLE IF NOT EXISTS Order_Items (
+CREATE TABLE IF NOT EXISTS order_items (
     Order_Item_ID INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     ord_id INT NOT NULL,   -- Reference to Orders.Order_ID
     prod_id INT NOT NULL, -- Reference to Products.Product_ID
