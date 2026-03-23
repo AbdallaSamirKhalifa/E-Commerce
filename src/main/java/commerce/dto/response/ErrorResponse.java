@@ -1,4 +1,4 @@
-package commerce.dto;
+package commerce.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
