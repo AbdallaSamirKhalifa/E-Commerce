@@ -2,10 +2,9 @@ package commerce.entities;
 
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -17,17 +16,20 @@ import java.util.Set;
         name = "Category.products",
         attributeNodes = @NamedAttributeNode("products")
 )
+@Builder
+@AllArgsConstructor
+@RequiredArgsConstructor
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cat_id")
     private Integer id;
 
-    @Column(name = "cat_name", nullable = false,length = 100)
+    @Column(name = "cat_name", nullable = false, length = 100)
     private String name;
 
-    @OneToMany(mappedBy = "category",cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Product> products;
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Product> products=new HashSet<>();
 
 
 }

@@ -1,13 +1,11 @@
 package commerce.entities;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.Period;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -19,6 +17,8 @@ import java.util.Set;
         name = "Order.items",
         attributeNodes = @NamedAttributeNode("orderItems")
 )
+@AllArgsConstructor
+@RequiredArgsConstructor
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,14 +32,14 @@ public class Order {
     @Column(name = "order_date", nullable = false)
     private LocalDateTime orderDate;
 
-    @Column(name = "total_amount", nullable = false, precision = 10,scale = 2)
+    @Column(name = "total_amount", nullable = false, precision = 10, scale = 2)
     private BigDecimal totalAmount;
 
-    @Column(name = "ord_note",length = 500,nullable = true)
+    @Column(name = "ord_note", length = 500, nullable = true)
     private String note;
 
-    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<OrderItem> orderItems;
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<OrderItem> orderItems=new HashSet<>();
 
 
 }

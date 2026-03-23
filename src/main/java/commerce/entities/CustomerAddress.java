@@ -1,7 +1,7 @@
 package commerce.entities;
 
 import jakarta.persistence.*;
-import lombok.CustomLog;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,6 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class CustomerAddress {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,11 +22,11 @@ public class CustomerAddress {
     @JoinColumn(name = "cust_id", nullable = false)
     private Customer customer;
 
-    @Column(length = 20,nullable = false)
+    @Column(length = 20, nullable = false)
     private String label;
-    @Column(length = 20,nullable = false)
+    @Column(length = 20, nullable = false)
     private String city;
-    @Column(length = 100,nullable = false)
+    @Column(length = 100, nullable = false)
     private String street;
     @Column(length = 250)
     private String notes;

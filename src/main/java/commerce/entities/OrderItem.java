@@ -1,6 +1,7 @@
 package commerce.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,6 +13,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,14 +28,14 @@ public class OrderItem {
     @JoinColumn(name = "prod_id", nullable = false)
     private Product product;
 
-    @Column(name = "qty",check = @CheckConstraint(
+    @Column(name = "qty", check = @CheckConstraint(
             name = "CHK_Order_Item_Quantity",
             constraint = "quantity > 0"
     )
     )
     private Integer quantity;
 
-    @Column(name = "price", nullable = false, precision = 10,scale = 2)
+    @Column(name = "price", nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
 
 
