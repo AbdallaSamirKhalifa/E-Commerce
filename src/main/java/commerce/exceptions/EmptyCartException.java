@@ -1,7 +1,7 @@
 package commerce.exceptions;
 
-public class EmptyCartException extends RuntimeException{
-    public EmptyCartException(String message){
+public class EmptyCartException extends RuntimeException {
+    public EmptyCartException(String message) {
         super(message);
     }
 }

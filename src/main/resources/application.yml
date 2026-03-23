@@ -1,15 +1,25 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/e_commerce
-    username: ${POSTGRES_USER:postgres}
-    password: ${POSTGRES_PASSWORD:password}
+    url: ${DATASOURCE_URL:jdbc:postgresql://postgres:5432/e_commerce }
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
   properties:
     hibernate:
       dialect: org.hibernate.dialect.PostgreSQLDialect
-
+  mail:
+    username: ${SMTP_MAIL}
+    password: ${SMTP_PASS}
+    host: smtp.gmail.com
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 ---
 spring:
   config:

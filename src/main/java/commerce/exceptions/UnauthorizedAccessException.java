@@ -1,7 +1,7 @@
 package commerce.exceptions;
 
-public class UnauthorizedAccessException extends RuntimeException{
-    public UnauthorizedAccessException(String message){
+public class UnauthorizedAccessException extends RuntimeException {
+    public UnauthorizedAccessException(String message) {
         super(message);
     }
 }

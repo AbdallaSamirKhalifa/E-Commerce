@@ -19,13 +19,19 @@ public class ErrorResponse {
 
     private LocalDateTime timestamp;
     private Integer status;
-    /**{@summary Short description of the error type}
-     * */
+    /**
+     * {@summary Short description of the error type}
+     *
+     */
     private String error;
-    /**{@summary Detailed error message}
-     * */
+    /**
+     * {@summary Detailed error message}
+     *
+     */
     private String message;
-    /**{@summary Request URI path}
-     * */
+    /**
+     * {@summary Request URI path}
+     *
+     */
     private String path;
 }
