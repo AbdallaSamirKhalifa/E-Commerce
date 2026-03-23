@@ -1,2 +1,5 @@
 /mvnw text eol=lf
 *.cmd text eol=crlf
+Dockerfile linguist-language=Dockerify
+*.sh linguist-language=Shell
+*.sql linguist-language=SQL
