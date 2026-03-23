@@ -17,10 +17,6 @@ import java.util.Set;
                 @NamedEntityGraph(
                         name = "Customer.addresses",
                         attributeNodes = @NamedAttributeNode("addresses")
-                ),
-                @NamedEntityGraph(
-                        name = "Customer.orders",
-                        attributeNodes = @NamedAttributeNode("orders")
                 )
         }
 )
