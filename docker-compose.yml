@@ -14,7 +14,7 @@ services:
       - postgres-data:/var/lib/postgresql/data
       - ./src/main/resources/schema.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
-      - e-commerce-network
+      - db-net
 
 
 
@@ -31,7 +31,8 @@ services:
       postgres:
         condition: service_healthy
     networks:
-      - e-commerce-network
+      - db-net
+      - api-net
 
 
 volumes:
@@ -40,5 +41,8 @@ volumes:
   pgadmin-data:
 
 networks:
-  e-commerce-network:
+  db-net:
+    driver: bridge
+    internal: true
+  api-net:
     driver: bridge

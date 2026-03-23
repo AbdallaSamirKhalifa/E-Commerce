@@ -18,7 +18,7 @@ import java.util.Set;
         attributeNodes = @NamedAttributeNode("orderItems")
 )
 @AllArgsConstructor
-@RequiredArgsConstructor
+@Builder
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

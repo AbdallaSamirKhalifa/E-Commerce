@@ -20,7 +20,7 @@ import java.util.Set;
         }
 )
 @AllArgsConstructor
-@RequiredArgsConstructor
+@Builder
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

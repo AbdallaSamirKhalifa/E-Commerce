@@ -3,7 +3,6 @@ package commerce.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,7 +17,6 @@ import java.util.Set;
 )
 @Builder
 @AllArgsConstructor
-@RequiredArgsConstructor
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

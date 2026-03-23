@@ -1,9 +1,8 @@
 package commerce.entities;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.Accessors;
 
 import java.util.Set;
 
@@ -16,6 +15,8 @@ import java.util.Set;
         name = "Cart.items",
         attributeNodes = @NamedAttributeNode("cartItems")
 )
+@Builder
+@AllArgsConstructor
 public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
