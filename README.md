@@ -48,6 +48,13 @@ This is a **Simple Showcase E-Commerce Application** intended to demonstrate a c
 - Initial ***JPA*** repository.
 - Using ***JpaRepository*** for ***Paging and Sorting***.
 
+### Services
+- Using the naming convention IServiceName to separate the service from it's implementation
+  better than using ServiceNameImp Convention making the code cleaner and robust.
+
+### Controllers
+#### Assemblers
+- Using ***Spring HATEOS*** to add links to relevant operations.
 ---
 
 ## Contact & Contribution
