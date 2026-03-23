@@ -1,5 +1,6 @@
 /mvnw text eol=lf
 *.cmd text eol=crlf
-Dockerfile linguist-language=Dockerify
-*.sh linguist-language=Shell
-*.sql linguist-language=SQL
+Dockerfile linguist-detectable=true
+*.sql linguist-detectable=true
+*.yml linguist-detectable=true
+*.yaml linguist-detectable=true
