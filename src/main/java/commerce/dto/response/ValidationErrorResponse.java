@@ -1,6 +1,7 @@
 package commerce.dto.response;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,6 +16,7 @@ import java.util.Map;
 @Builder
 public class ValidationErrorResponse {
     Map<String, String> errors;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd - HH:mm:ss")
     private LocalDateTime timestamp;
     private Integer status;
     /**
