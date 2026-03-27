@@ -143,7 +143,7 @@ public class GlobalExceptionHandler {
                 timestamp(LocalDateTime.now())
                 .status(status.value())
                 .error(status.getReasonPhrase())
-                .message(ex.getMessage())
+                .message("Invalid request. Please fulfill the restrictions put to the request fields.")
                 .path(request.getRequestURI())
                 .errors(errors)
                 .build();
