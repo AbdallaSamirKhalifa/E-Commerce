@@ -135,7 +135,7 @@ public class GlobalExceptionHandler {
         var status = HttpStatus.BAD_REQUEST;
         Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String filed = ((FieldError) errors).getField();
+            String filed = ((FieldError) error).getField();
             String message = error.getDefaultMessage();
             errors.put(filed, message);
         });
