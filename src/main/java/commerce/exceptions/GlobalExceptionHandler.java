@@ -116,8 +116,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<ErrorResponse> handleBaseException(RuntimeException ex, HttpServletRequest request) {
-
+    public ResponseEntity<ErrorResponse> handleBaseException(Exception ex, HttpServletRequest request) {
+        log.error("Runtime exception occurred with message ,{}, {}, {}",ex.getStackTrace(),ex.getCause(),ex.getMessage());
         var status = HttpStatus.INTERNAL_SERVER_ERROR;
         ErrorResponse errorResponse = ErrorResponse.builder().
                 timestamp(LocalDateTime.now())
