@@ -33,7 +33,13 @@ This is a **Simple Showcase E-Commerce Application** intended to demonstrate a c
 ---
 
 ## Documentation
-
+### Features
+- Category operations.
+- Customer registration.
+- Securing Endpoints with basic auth.
+- Using ***HATEOS*** for linking relative endpoints.
+- Sending emails with ***Spring SMTP***.
+- Sending Welcome mail after new customer registration.
 ### Exceptions
 
 - Using ***GlobalExceptionHandler*** for centralized exception handling 
