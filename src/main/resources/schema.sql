@@ -1,10 +1,22 @@
 -- 1. Identity Domain
 CREATE DATABASE e_commerce
+
+CREATE TABLE IF NOT EXISTS roles(
+    role_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    role_name VARCHAR(50) UNIQUE NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS user_role(
+    user_id INT NOT NULL--REFERENCES Users(user_id),
+    role_id INT NOT NULL--REFERENCES roles(role_id)
+);
+
 CREATE TABLE IF NOT EXISTS Users (
     user_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     user_first_name VARCHAR(100) NOT NULL,
     user_last_name VARCHAR(100) NOT NULL,
     user_email VARCHAR(150) UNIQUE NOT NULL,
+    username VARCHAR(100) UNIQUE NOT NULL,
     user_password VARCHAR(255) NOT NULL
 );
 
