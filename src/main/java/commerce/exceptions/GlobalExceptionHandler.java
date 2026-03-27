@@ -3,18 +3,23 @@ package commerce.exceptions;
 import commerce.dto.response.ErrorResponse;
 import commerce.dto.response.ValidationErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
+import java.text.MessageFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
 @RestControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
@@ -123,7 +128,20 @@ public class GlobalExceptionHandler {
                 timestamp(LocalDateTime.now())
                 .status(status.value())
                 .error(status.getReasonPhrase())
-                .message(ex.getMessage())
+                .message("Some Error occurred please try again later")
+                .path(request.getRequestURI())
+                .build();
+        return new ResponseEntity<>(errorResponse, status);
+    }
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<ErrorResponse> handleNoResourceFoundException(NoResourceFoundException ex, HttpServletRequest request) {
+        log.error("No resource found exception occurred with message {}, HTTP Method: {}",ex.getMessage(), ex.getHttpMethod());
+        var status = HttpStatus.NOT_FOUND;
+        ErrorResponse errorResponse = ErrorResponse.builder().
+                timestamp(LocalDateTime.now())
+                .status(status.value())
+                .error(status.getReasonPhrase())
+                .message("The resource you are trying to reach does not exist")
                 .path(request.getRequestURI())
                 .build();
         return new ResponseEntity<>(errorResponse, status);
