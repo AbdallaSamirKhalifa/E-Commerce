@@ -17,7 +17,8 @@ CREATE TABLE IF NOT EXISTS Users (
     user_last_name VARCHAR(100) NOT NULL,
     user_email VARCHAR(150) UNIQUE NOT NULL,
     username VARCHAR(100) UNIQUE NOT NULL,
-    user_password VARCHAR(255) NOT NULL
+    user_password VARCHAR(255) NOT NULL,
+    is_enabled BIT DEFAULT CAST(1 AS BIT)
 );
 
 CREATE TABLE IF NOT EXISTS customer(

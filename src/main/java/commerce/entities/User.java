@@ -35,6 +35,9 @@ public class User {
     @Column(name = "user_password", nullable = false, length = 255)
     private String password;
 
+    @Column(name = "is_enabled", columnDefinition = "BIT")
+    private boolean isEnabled;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_role",
