@@ -27,7 +27,7 @@ public class Cart {
     @JoinColumn(name = "cust_id", nullable = false)
     private Customer customer;
 
-    @Column(name = "is_locked")
+    @Column(name = "is_locked", columnDefinition = "BIT")
     private Boolean isLocked;
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
