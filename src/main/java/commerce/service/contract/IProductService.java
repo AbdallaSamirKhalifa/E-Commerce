@@ -20,7 +20,5 @@ public interface IProductService {
 
     ProductResponse getProductById(Integer prodId);
 
-    ProductResponse convertToResponse(Product product);
 
-    Product convertToEntity(ProductRequest request);
 }

@@ -4,6 +4,7 @@ import commerce.dto.request.CategoryRequest;
 import commerce.dto.response.CategoryResponse;
 import commerce.entities.Category;
 import commerce.exceptions.ResourceNotFoundException;
+import commerce.mappers.contracts.ICategoryMapper;
 import commerce.repositories.CategoryRepository;
 import commerce.service.contract.ICategoryService;
 import lombok.AllArgsConstructor;
@@ -21,13 +22,14 @@ import java.util.List;
 @Slf4j
 public class CategoryService implements ICategoryService {
     private final CategoryRepository repository;
+    private final ICategoryMapper mapper;
 
     @Override
     public CategoryResponse createCategory(CategoryRequest request) {
-        Category category = convertToEntity(request);
+        Category category = mapper.requestToEntity(request);
         category = repository.save(category);
         log.info("\n\tCreating new Category {}", category.getName());
-        return convertToResponse(category);
+        return mapper.toResponse(category);
     }
 
     @Transactional
@@ -37,13 +39,13 @@ public class CategoryService implements ICategoryService {
                 orElseThrow(() -> new ResourceNotFoundException("Category", catId));
         category.setName(request.name());
         log.info("\n\tUpdating Category with id: {}", category.getId());
-        return convertToResponse(category);
+        return mapper.toResponse(category);
     }
 
     @Override
     public List<CategoryResponse> getAllCategories() {
 
-        return repository.findAll().stream().map(this::convertToResponse).toList();
+        return repository.findAll().stream().map(mapper::toResponse).toList();
     }
 
     @Override
@@ -53,7 +55,7 @@ public class CategoryService implements ICategoryService {
                                                          String sortOrder) {
 
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortOrder), sortBy));
-        return repository.findAll(pageRequest).map(this::convertToResponse);
+        return repository.findAll(pageRequest).map(mapper::toResponse);
     }
 
     @Override
@@ -64,17 +66,8 @@ public class CategoryService implements ICategoryService {
 
     @Override
     public CategoryResponse getCategoryById(Integer catId) {
-        return convertToResponse(repository.findById(catId).orElseThrow(() -> new ResourceNotFoundException("Category", catId)));
+        return mapper.toResponse(repository.findById(catId).orElseThrow(() -> new ResourceNotFoundException("Category", catId)));
     }
 
-    @Override
-    public CategoryResponse convertToResponse(Category category) {
 
-        return new CategoryResponse(category.getId(), category.getName());
-    }
-
-    @Override
-    public Category convertToEntity(CategoryRequest request) {
-        return Category.builder().name(request.name()).build();
-    }
 }

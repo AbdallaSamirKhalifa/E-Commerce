@@ -20,7 +20,5 @@ public interface ICategoryService {
 
     CategoryResponse getCategoryById(Integer catId);
 
-    CategoryResponse convertToResponse(Category category);
 
-    Category convertToEntity(CategoryRequest request);
 }

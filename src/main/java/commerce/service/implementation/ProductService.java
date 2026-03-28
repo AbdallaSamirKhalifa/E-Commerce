@@ -5,6 +5,7 @@ import commerce.dto.response.ProductResponse;
 import commerce.entities.Category;
 import commerce.entities.Product;
 import commerce.exceptions.ResourceNotFoundException;
+import commerce.mappers.contracts.IProductMapper;
 import commerce.repositories.CategoryRepository;
 import commerce.repositories.ProductRepository;
 import commerce.service.contract.IProductService;
@@ -24,17 +25,18 @@ import java.util.List;
 public class ProductService implements IProductService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final IProductMapper productMapper;
 
     @Override
     public ProductResponse createProduct(ProductRequest request) {
         Category category = categoryRepository.findById(request.categoryId())
                 .orElseThrow(() -> new ResourceNotFoundException("Category", request.categoryId()));
-        Product product = convertToEntity(request);
+        Product product = productMapper.requestTooEntity(request);
         product.setCategory(category);
         Product newProduct = productRepository.save(product);
         log.info("\n\tCreating new product with name: {}, id: {}", newProduct.getName(), newProduct.getId());
 
-        return convertToResponse(newProduct);
+        return productMapper.toResponse(newProduct);
     }
 
     @Transactional
@@ -51,14 +53,14 @@ public class ProductService implements IProductService {
         product.setCategory(category);
         log.info("\n\tUpdating product with id: {}", product.getId());
 
-        return convertToResponse(product);
+        return productMapper.toResponse(product);
     }
 
     @Override
     public List<ProductResponse> getAllProducts() {
         return productRepository.findAll().
                 stream().
-                map(this::convertToResponse).
+                map(productMapper::toResponse).
                 toList();
     }
 
@@ -76,7 +78,7 @@ public class ProductService implements IProductService {
                                 sortBy));
 
         return productRepository.findAll(pageRequest).
-                map(this::convertToResponse);
+                map(productMapper::toResponse);
     }
 
     @Override
@@ -88,25 +90,9 @@ public class ProductService implements IProductService {
     @Override
     public ProductResponse getProductById(Integer prodId) {
         return productRepository.findById(prodId).
-                map(this::convertToResponse).
+                map(productMapper::toResponse).
                 orElseThrow(() -> new ResourceNotFoundException("Product", prodId));
     }
 
-    @Override
-    public ProductResponse convertToResponse(Product product) {
 
-        return new ProductResponse(product.getId(), product.getName(),
-                product.getDescription(),
-                product.getPrice(), product.getIsAvailable());
-    }
-
-    @Override
-    public Product convertToEntity(ProductRequest request) {
-        return Product.builder().
-                name(request.name())
-                .description(request.description())
-                .price(request.price())
-                .isAvailable(request.isAvailable())
-                .build();
-    }
 }
