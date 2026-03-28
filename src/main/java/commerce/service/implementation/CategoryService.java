@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -29,15 +30,13 @@ public class CategoryService implements ICategoryService {
         return convertToResponse(category);
     }
 
+    @Transactional
     @Override
     public CategoryResponse updateCategory(CategoryRequest request, Integer catId) {
         Category category = repository.findById(catId).
                 orElseThrow(() -> new ResourceNotFoundException("Category", catId));
-        log.info("\n\tUpdating category FROM: {}, TO: {}", category.getName(), request.name());
         category.setName(request.name());
-
-        repository.save(category);
-
+        log.info("\n\tUpdating Category with id: {}", category.getId());
         return convertToResponse(category);
     }
 
