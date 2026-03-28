@@ -18,6 +18,7 @@ This is a **Simple Showcase E-Commerce Application** intended to demonstrate a c
 - **Runtime:** Java 17
 - **Framework:** Spring Boot 3+
 - **Web:** Spring Web (RESTful API)
+- **Security**: Spring Security (Securing the application with basic authentication)
 - **Data:** Spring Data JPA (Hibernate)
 - **Database:** PostgreSQL 16
 - **DevOps:** Docker & Docker Compose
@@ -27,14 +28,15 @@ This is a **Simple Showcase E-Commerce Application** intended to demonstrate a c
 
 - **Security:** Integration of **Spring Security** with JWT for stateless authentication.
 - **Migrations:** **Liquibase** for version-controlled database schema management.
-- **Messaging:** **Spring SMTP** for automated order confirmation and registration emails.
+- **Messaging:** **Spring SMTP** for automated order confirmation and registration emails (DONE).
 - **Caching:** Redis integration for product catalog performance.
 
 ---
 
 ## Documentation
 ### Features
-- Category operations.
+- Category CRUD operations.
+- Product CRUD operations.
 - Customer registration.
 - Securing Endpoints with basic auth.
 - Using ***HATEOS*** for linking relative endpoints.
