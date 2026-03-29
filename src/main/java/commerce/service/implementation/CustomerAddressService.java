@@ -28,8 +28,8 @@ public class CustomerAddressService implements ICustomerAddressService {
     public AddressResponse createNewAddress(AddressRequest address) {
         CustomerAddress customerAddress = mapper.requestToEntity(address);
         customerAddress.setCustomer(helper.getCurrentCustomer());
-        addressRepository.save(customerAddress);
-        return null;
+      CustomerAddress newAddress=  addressRepository.save(customerAddress);
+        return mapper.toResponse(newAddress);
     }
 
 
