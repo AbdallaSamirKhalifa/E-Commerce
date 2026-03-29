@@ -27,7 +27,8 @@ public class CartItem {
 
     @Column(name = "qty", check = @CheckConstraint(
             name = "CHK_Cart_Item_Quantity",
-            constraint = "quantity > 0")
+            constraint = "qty > 0")
+
     )
     private Integer quantity;
 
