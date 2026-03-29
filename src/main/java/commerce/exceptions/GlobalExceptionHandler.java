@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
-import java.text.MessageFormat;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -122,7 +120,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ErrorResponse> handleBaseException(Exception ex, HttpServletRequest request) {
-        log.error("Runtime exception occurred with message ,{}, {}, {}",ex.getStackTrace(),ex.getCause(),ex.getMessage());
+        log.error("Runtime exception occurred with message ,{}, {}, {}", ex.getStackTrace(), ex.getCause(), ex.getMessage());
         var status = HttpStatus.INTERNAL_SERVER_ERROR;
         ErrorResponse errorResponse = ErrorResponse.builder().
                 timestamp(LocalDateTime.now())
@@ -133,9 +131,10 @@ public class GlobalExceptionHandler {
                 .build();
         return new ResponseEntity<>(errorResponse, status);
     }
+
     @ExceptionHandler(NoResourceFoundException.class)
     public ResponseEntity<ErrorResponse> handleNoResourceFoundException(NoResourceFoundException ex, HttpServletRequest request) {
-        log.error("No resource found exception occurred with message {}, HTTP Method: {}",ex.getMessage(), ex.getHttpMethod());
+        log.error("No resource found exception occurred with message {}, HTTP Method: {}", ex.getMessage(), ex.getHttpMethod());
         var status = HttpStatus.NOT_FOUND;
         ErrorResponse errorResponse = ErrorResponse.builder().
                 timestamp(LocalDateTime.now())
@@ -147,6 +146,19 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, status);
     }
 
+    @ExceptionHandler(LockedCartException.class)
+    public ResponseEntity<ErrorResponse> handleLockedCartException(LockedCartException ex, HttpServletRequest request) {
+        log.error("Locked cart exception occurred ");
+        var status = HttpStatus.CONFLICT;
+        ErrorResponse errorResponse = ErrorResponse.builder().
+                timestamp(LocalDateTime.now())
+                .status(status.value())
+                .error(status.getReasonPhrase())
+                .message(ex.getMessage())
+                .path(request.getRequestURI())
+                .build();
+        return new ResponseEntity<>(errorResponse, status);
+    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ValidationErrorResponse> handleValidationErrorException(MethodArgumentNotValidException ex, HttpServletRequest request) {
