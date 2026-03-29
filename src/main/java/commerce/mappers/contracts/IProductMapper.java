@@ -5,7 +5,7 @@ import commerce.dto.response.ProductResponse;
 import commerce.entities.Product;
 
 public interface IProductMapper {
-    ProductResponse toResponse(Product product);
+    ProductResponse entityToResponse(Product product);
     Product requestTooEntity(ProductRequest product);
     Product responseToEntity(ProductResponse product);
 }

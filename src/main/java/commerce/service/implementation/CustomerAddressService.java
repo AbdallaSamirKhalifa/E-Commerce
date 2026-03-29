@@ -29,7 +29,7 @@ public class CustomerAddressService implements ICustomerAddressService {
         CustomerAddress customerAddress = mapper.requestToEntity(address);
         customerAddress.setCustomer(helper.getCurrentCustomer());
       CustomerAddress newAddress=  addressRepository.save(customerAddress);
-        return mapper.toResponse(newAddress);
+        return mapper.entityToResponse(newAddress);
     }
 
 
@@ -43,7 +43,7 @@ public class CustomerAddressService implements ICustomerAddressService {
         customerAddress.setLabel(address.label());
         customerAddress.setNotes(address.notes());
 
-        return mapper.toResponse(customerAddress);
+        return mapper.entityToResponse(customerAddress);
     }
 
     @Override
@@ -55,11 +55,11 @@ public class CustomerAddressService implements ICustomerAddressService {
     public List<AddressResponse> getAllAddresses() {
         return addressRepository.
                 findAllByCustomerId(helper.getCurrentCustomer().getId())
-                .stream().map(mapper::toResponse).toList();
+                .stream().map(mapper::entityToResponse).toList();
     }
 
     public AddressResponse getAddressById(Integer addressId) {
-        return addressRepository.findByIdAndCustomerId(helper.getCurrentCustomer().getId(), addressId).map(mapper::toResponse)
+        return addressRepository.findByIdAndCustomerId(helper.getCurrentCustomer().getId(), addressId).map(mapper::entityToResponse)
                 .orElseThrow(() -> new ResourceNotFoundException("Address", addressId));
     }
 }

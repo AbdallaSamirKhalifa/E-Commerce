@@ -37,7 +37,7 @@ public class ProductService implements IProductService {
         Product newProduct = productRepository.save(product);
         log.info("\n\tCreating new product with name: {}, id: {}", newProduct.getName(), newProduct.getId());
 
-        return productMapper.toResponse(newProduct);
+        return productMapper.entityToResponse(newProduct);
     }
 
     @Transactional
@@ -53,14 +53,14 @@ public class ProductService implements IProductService {
         product.setCategory(category);
         log.info("\n\tUpdating product with id: {}", product.getId());
 
-        return productMapper.toResponse(product);
+        return productMapper.entityToResponse(product);
     }
 
     @Override
     public List<ProductResponse> getAllProducts() {
         return productRepository.findAll().
                 stream().
-                map(productMapper::toResponse).
+                map(productMapper::entityToResponse).
                 toList();
     }
 
@@ -78,7 +78,7 @@ public class ProductService implements IProductService {
                                 sortBy));
 
         return productRepository.findAll(pageRequest).
-                map(productMapper::toResponse);
+                map(productMapper::entityToResponse);
     }
 
     @Override
@@ -90,7 +90,7 @@ public class ProductService implements IProductService {
     @Override
     public ProductResponse getProductById(Integer prodId) {
         return productRepository.findById(prodId).
-                map(productMapper::toResponse).
+                map(productMapper::entityToResponse).
                 orElseThrow(() -> new ResourceNotFoundException("Product", prodId));
     }
 

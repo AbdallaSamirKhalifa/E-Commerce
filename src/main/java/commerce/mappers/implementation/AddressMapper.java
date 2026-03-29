@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class AddressMapper implements IAddressMapper {
     @Override
-    public AddressResponse toResponse(CustomerAddress address) {
+    public AddressResponse entityToResponse(CustomerAddress address) {
         return new AddressResponse(address.getAddressId(),address.getLabel(),
                 address.getCity(),
                 address.getStreet(),

@@ -5,7 +5,7 @@ import commerce.dto.response.AddressResponse;
 import commerce.entities.CustomerAddress;
 
 public interface IAddressMapper {
-    AddressResponse toResponse(CustomerAddress address);
+    AddressResponse entityToResponse(CustomerAddress address);
 
     CustomerAddress requestToEntity(AddressRequest address);
 

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class CategoryMapper implements ICategoryMapper {
     @Override
-    public CategoryResponse toResponse(Category category) {
+    public CategoryResponse entityToResponse(Category category) {
         return new CategoryResponse(category.getId(), category.getName());
 
     }
