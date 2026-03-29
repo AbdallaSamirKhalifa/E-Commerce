@@ -2,7 +2,8 @@ package commerce.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.Accessors;
+import org.hibernate.annotations.Formula;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "cart_items")
