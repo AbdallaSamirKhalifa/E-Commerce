@@ -31,6 +31,7 @@ public class CartItem {
 
     )
     private Integer quantity;
-
+    @Formula("qty * (SELECT p.price FROM product p WHERE p.prod_id = prod_id)")
+    BigDecimal subtotal;
 
 }
