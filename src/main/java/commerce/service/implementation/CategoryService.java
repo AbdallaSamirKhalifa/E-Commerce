@@ -29,7 +29,7 @@ public class CategoryService implements ICategoryService {
         Category category = mapper.requestToEntity(request);
         category = repository.save(category);
         log.info("\n\tCreating new Category {}", category.getName());
-        return mapper.toResponse(category);
+        return mapper.entityToResponse(category);
     }
 
     @Transactional
@@ -39,13 +39,13 @@ public class CategoryService implements ICategoryService {
                 orElseThrow(() -> new ResourceNotFoundException("Category", catId));
         category.setName(request.name());
         log.info("\n\tUpdating Category with id: {}", category.getId());
-        return mapper.toResponse(category);
+        return mapper.entityToResponse(category);
     }
 
     @Override
     public List<CategoryResponse> getAllCategories() {
 
-        return repository.findAll().stream().map(mapper::toResponse).toList();
+        return repository.findAll().stream().map(mapper::entityToResponse).toList();
     }
 
     @Override
@@ -55,7 +55,7 @@ public class CategoryService implements ICategoryService {
                                                          String sortOrder) {
 
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortOrder), sortBy));
-        return repository.findAll(pageRequest).map(mapper::toResponse);
+        return repository.findAll(pageRequest).map(mapper::entityToResponse);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class CategoryService implements ICategoryService {
 
     @Override
     public CategoryResponse getCategoryById(Integer catId) {
-        return mapper.toResponse(repository.findById(catId).orElseThrow(() -> new ResourceNotFoundException("Category", catId)));
+        return mapper.entityToResponse(repository.findById(catId).orElseThrow(() -> new ResourceNotFoundException("Category", catId)));
     }
 
 

@@ -14,9 +14,9 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class CategoryModelAssembler implements
         RepresentationModelAssembler<CategoryResponse, EntityModel<CategoryResponse>> {
     @Override
-    public EntityModel<CategoryResponse> toModel(CategoryResponse cart) {
-        return EntityModel.of(cart,
-                linkTo(methodOn(CategoryController.class).getCategoryById(cart.id())).withSelfRel(),
+    public EntityModel<CategoryResponse> toModel(CategoryResponse category) {
+        return EntityModel.of(category,
+                linkTo(methodOn(CategoryController.class).getCategoryById(category.id())).withSelfRel(),
                 linkTo(methodOn(CategoryController.class).getAllCategories()).withRel("all"),
                 linkTo(methodOn(CategoryController.class).
                         getAllCategoriesByPage("name", "ASC",
