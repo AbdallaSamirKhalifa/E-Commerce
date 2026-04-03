@@ -27,7 +27,7 @@ public class Product {
     @Column(name = "prod_price", precision = 10, scale = 2)
     private BigDecimal price;
 
-    @Column(name = "is_available", columnDefinition = "BIT")
+    @Column(name = "is_available")
     private Boolean isAvailable;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

@@ -14,9 +14,16 @@ public class ContextCustomer {
     private final ICustomerService customerService;
 
     public Customer getContextCustomer() {
-        User currentUser = ((SecurityUser)
+        User currentUser = getContextUser();
+        return customerService.getByUserId(currentUser.getUserId());
+    }
+    public Customer getContextCustomerWithCartInfo() {
+        User currentUser = getContextUser();
+        return customerService.fetchWithCartByUserId(currentUser.getUserId());
+    }
+    private User getContextUser(){
+        return ((SecurityUser)
                 SecurityContextHolder.getContext().
                         getAuthentication().getPrincipal()).getUser();
-        return customerService.getByUserId(currentUser.getUserId());
     }
 }

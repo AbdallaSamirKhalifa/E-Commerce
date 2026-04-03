@@ -2,8 +2,6 @@ package commerce.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Formula;
-import java.math.BigDecimal;
 
 @Entity
 @Table(name = "cart_items")
@@ -32,7 +30,5 @@ public class CartItem {
 
     )
     private Integer quantity;
-    @Formula("qty * (SELECT p.price FROM product p WHERE p.prod_id = prod_id)")
-    BigDecimal subtotal;
 
 }

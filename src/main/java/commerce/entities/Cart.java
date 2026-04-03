@@ -2,8 +2,6 @@ package commerce.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.Accessors;
-
 import java.util.Set;
 
 @Entity
@@ -27,7 +25,7 @@ public class Cart {
     @JoinColumn(name = "cust_id", nullable = false)
     private Customer customer;
 
-    @Column(name = "is_locked", columnDefinition = "BIT")
+    @Column(name = "is_locked")
     private Boolean isLocked;
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
