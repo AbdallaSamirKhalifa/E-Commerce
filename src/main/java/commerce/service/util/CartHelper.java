@@ -32,7 +32,7 @@ public class CartHelper {
         return contextCustomer.getContextCustomerWithCartInfo();
     }
 
-    public Optional<CartItem> fetchValidateItemExistenceInCartByProductId(int productId, Cart cart) {
+    public Optional<CartItem> findValidateItemExistenceInCartByProductId(int productId, Cart cart) {
         return cart.getCartItems()
                 .stream().filter(item -> item.getProduct().
                         getId().equals(productId)).

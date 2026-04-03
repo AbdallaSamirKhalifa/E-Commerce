@@ -9,4 +9,6 @@ public interface ICartService {
     CartResponse getMyCart();
     CartResponse increaseCartItem(UpdateCartItemRequest request);
     CartResponse decreaseCartItem(UpdateCartItemRequest request);
+    CartResponse removeItemFromCart(int productId);
+
 }

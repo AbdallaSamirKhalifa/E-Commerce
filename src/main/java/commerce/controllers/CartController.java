@@ -5,6 +5,7 @@ import commerce.dto.request.AddToCartRequest;
 import commerce.dto.request.UpdateCartItemRequest;
 import commerce.dto.response.CartResponse;
 import commerce.service.contract.ICartService;
+import jakarta.validation.Path;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.EntityModel;
@@ -50,5 +51,12 @@ public class CartController {
         return ResponseEntity.ok(
                 assembler.toModel(cartService.decreaseCartItem(request))
         );
+    }
+
+    @PatchMapping("/{prodId}")
+    public ResponseEntity<EntityModel<CartResponse>> removeItemFromCart(@PathVariable Integer prodId){
+        return ResponseEntity.ok(assembler.toModel(
+                cartService.removeItemFromCart(prodId)
+        ));
     }
 }
