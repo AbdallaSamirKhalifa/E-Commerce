@@ -19,13 +19,13 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf(csrf -> csrf.disable())
+                .csrf(csrf -> csrf.disable())//for testing
                 .authorizeHttpRequests(
                         request ->
                                 request.requestMatchers("/api/v1/auth/**").permitAll()
                                         .requestMatchers(HttpMethod.GET, "/api/v1/categories/**").permitAll()
                                         .requestMatchers(HttpMethod.GET, "/api/v1/products/**").permitAll()
-                                        .requestMatchers("/api/v1/customer/address").hasRole("CUSTOMER")
+                                        .requestMatchers("/api/v1/customer/**").hasRole("CUSTOMER")
                                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())
