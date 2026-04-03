@@ -20,7 +20,7 @@ This is a **Simple Showcase E-Commerce Application** intended to demonstrate a c
 - **Web:** Spring Web (RESTful API)
 - **Security**: Spring Security (Securing the application with basic authentication)
 - **Data:** Spring Data JPA (Hibernate)
-- **Database:** PostgreSQL 16
+- **Database:** PostgreSQL 
 - **DevOps:** Docker & Docker Compose
 - **Build Tool:** Maven
 
@@ -35,13 +35,17 @@ This is a **Simple Showcase E-Commerce Application** intended to demonstrate a c
 
 ## Documentation
 ### Features
-- Category CRUD operations.
-- Product CRUD operations.
+- Category Management.
+- Product Management.
 - Customer registration.
 - Securing Endpoints with basic auth.
 - Using ***HATEOS*** for linking relative endpoints.
 - Sending emails with ***Spring SMTP***.
 - Sending Welcome mail after new customer registration.
+- Cart Management.
+- Checkout (Place Order).
+- Sending Welcome Email after customer registration.
+- Sending confirmation email after order checkout.
 ### Exceptions
 
 - Using ***GlobalExceptionHandler*** for centralized exception handling 
