@@ -59,4 +59,9 @@ public class CartController {
                 cartService.removeItemFromCart(prodId)
         ));
     }
+    @DeleteMapping("/clear")
+    public ResponseEntity<Void> clearCart(){
+        cartService.clearCart();
+        return ResponseEntity.noContent().build();
+    }
 }

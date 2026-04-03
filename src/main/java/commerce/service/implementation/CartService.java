@@ -8,6 +8,7 @@ import commerce.exceptions.InvalidQuantityException;
 import commerce.exceptions.LockedCartException;
 import commerce.exceptions.ResourceNotFoundException;
 import commerce.mappers.implementation.CartMapper;
+import commerce.repositories.CartItemRepository;
 import commerce.repositories.CartRepository;
 import commerce.service.contract.ICartService;
 import commerce.service.util.CartHelper;
@@ -21,7 +22,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class CartService implements ICartService {
-    private final CartRepository cartRepository;
+    private final CartItemRepository cartItemRepository;
     private final CartHelper helper;
     private final CartMapper mapper;
 
@@ -111,9 +112,19 @@ public class CartService implements ICartService {
         CartItem item=helper.findValidateItemExistenceInCartByProductId(productId,cart)
                 .orElseThrow(()->new ResourceNotFoundException("Item"));
         cart.getCartItems().remove(item);
-        item.setCart(null);
         return mapper.entityToResponse(cart);
     }
+
+    @Transactional
+    public void clearCart(){
+        Customer customer= helper.fetchContextCustomerWithCart();
+        Cart cart=customer.getCart();
+        if (cart==null)
+            throw new ResourceNotFoundException("Cart");
+        cartItemRepository.deleteAllItemsInBatch(cart.getCartId());
+        cart.setIsLocked(false);
+    }
+
     private CartResponse updateCartItem(Cart cart, CartItem cartItem, Integer quantityToAdd){
         helper.validateProductAvailability(cartItem.getProduct().getIsAvailable(), cartItem.getProduct().getName());
         cartItem.setQuantity(cartItem.getQuantity()+quantityToAdd);

@@ -10,5 +10,6 @@ public interface ICartService {
     CartResponse increaseCartItem(UpdateCartItemRequest request);
     CartResponse decreaseCartItem(UpdateCartItemRequest request);
     CartResponse removeItemFromCart(int productId);
+    void clearCart();
 
 }
