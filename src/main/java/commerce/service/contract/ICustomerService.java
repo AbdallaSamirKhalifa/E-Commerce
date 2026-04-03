@@ -4,5 +4,6 @@ import commerce.entities.Customer;
 
 public interface ICustomerService {
     Customer getByUserId(Integer userId);
+    Customer fetchWithCartByUserId(Integer userId);
 
 }

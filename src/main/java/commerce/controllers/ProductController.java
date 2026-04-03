@@ -20,7 +20,7 @@ public class ProductController {
     private final ProductModelAssembler assembler;
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/{id}")
+    @GetMapping("/{prodId}")
     public ResponseEntity<EntityModel<ProductResponse>> getProductById(@PathVariable Integer prodId) {
         return ResponseEntity.ok(
                 assembler

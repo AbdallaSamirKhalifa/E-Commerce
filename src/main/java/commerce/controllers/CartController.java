@@ -2,6 +2,7 @@ package commerce.controllers;
 
 import commerce.controllers.assemblers.CartControllerAssembler;
 import commerce.dto.request.AddToCartRequest;
+import commerce.dto.request.UpdateCartItemRequest;
 import commerce.dto.response.CartResponse;
 import commerce.service.contract.ICartService;
 import jakarta.validation.Valid;
@@ -35,4 +36,19 @@ public class CartController {
         );
     }
 
+    @PatchMapping("/increase")
+    public ResponseEntity<EntityModel<CartResponse>> increaseCartItem(@RequestBody @Valid UpdateCartItemRequest request){
+
+        return ResponseEntity.ok(
+                assembler.toModel(cartService.increaseCartItem(request))
+        );
+    }
+
+    @PatchMapping("/decrease")
+    public ResponseEntity<EntityModel<CartResponse>> decreaseCartItem(@RequestBody @Valid UpdateCartItemRequest request){
+
+        return ResponseEntity.ok(
+                assembler.toModel(cartService.decreaseCartItem(request))
+        );
+    }
 }

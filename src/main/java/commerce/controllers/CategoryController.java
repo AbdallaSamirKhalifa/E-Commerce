@@ -4,6 +4,7 @@ import commerce.controllers.assemblers.CategoryModelAssembler;
 import commerce.dto.request.CategoryRequest;
 import commerce.dto.response.CategoryResponse;
 import commerce.service.contract.ICategoryService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -26,7 +27,7 @@ public class CategoryController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public ResponseEntity<EntityModel<CategoryResponse>> createNewCategory(@RequestBody CategoryRequest categoryRequest) {
+    public ResponseEntity<EntityModel<CategoryResponse>> createNewCategory(@RequestBody @Valid CategoryRequest categoryRequest) {
         return ResponseEntity.status(HttpStatus.CREATED).
                 body(assembler.
                         toModel(categoryService.createCategory(categoryRequest)));

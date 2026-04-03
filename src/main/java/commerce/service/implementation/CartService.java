@@ -1,8 +1,12 @@
 package commerce.service.implementation;
 
+import ch.qos.logback.core.helpers.ThrowableToStringArray;
 import commerce.dto.request.AddToCartRequest;
+import commerce.dto.request.UpdateCartItemRequest;
 import commerce.dto.response.CartResponse;
 import commerce.entities.*;
+import commerce.exceptions.EmptyCartException;
+import commerce.exceptions.InvalidQuantityException;
 import commerce.exceptions.LockedCartException;
 import commerce.exceptions.ResourceNotFoundException;
 import commerce.mappers.implementation.CartMapper;
@@ -13,6 +17,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.tree.VariableHeightLayoutCache;
+import java.util.HashSet;
 import java.util.Optional;
 
 @Service
@@ -26,15 +32,22 @@ public class CartService implements ICartService {
     @Transactional
     public CartResponse addItemToCart(AddToCartRequest request) {
 
-        Customer customer= helper.getContextCustomer();
+        Customer customer= helper.fetchContextCustomerWithCart();
 
-        Cart cart=cartRepository.findWithItemsAndProductInfoByCustomerId(customer.getId())
-                .orElseGet(()->helper.createNewCart(customer));
+        if (customer.getCart()==null)
+        {
+            Cart crt= helper.createNewCart(customer);
+            customer.setCart(crt);
+        }
+        Cart cart=customer.getCart();
 
         if (cart.getIsLocked())
             throw new LockedCartException();
 
-        Optional<CartItem> existingItem=helper.validateItemExistenceInCart(request.productId(),cart);
+        if (cart.getCartItems()==null)
+            cart.setCartItems(new HashSet<>());
+
+        Optional<CartItem> existingItem=helper.fetchValidateItemExistenceInCartByProductId(request.productId(),cart);
 
         if(existingItem.isPresent())
             return this.UpdateCartItem(cart,existingItem.get(),request.quantity());
@@ -50,11 +63,46 @@ public class CartService implements ICartService {
 
     @Override
     public CartResponse getMyCart() {
-        Customer customer=helper.getContextCustomer();
+        Customer customer=helper.fetchContextCustomerWithCart();
 
-        return cartRepository.findWithItemsAndProductInfoByCustomerId(customer.getId()).
-                map(mapper::entityToResponse).
-                orElseThrow(()-> new ResourceNotFoundException("Cart"));
+        if (customer.getCart()==null)
+            throw new ResourceNotFoundException("Cart");
+        return mapper.entityToResponse(customer.getCart());
+//        return cartRepository.findWithItemsAndProductInfoByCustomerId(customer.getId()).
+//                map(mapper::entityToResponse).
+//                orElseThrow(()-> new );
+    }
+
+    @Transactional
+    @Override
+    public CartResponse increaseCartItem(UpdateCartItemRequest request) {
+        Customer customer =helper.fetchContextCustomerWithCart();
+
+        Cart cart=customer.getCart();
+        helper.validateCartEligibility(cart);
+
+        CartItem item=
+        helper.fetchValidateItemExistenceInCartByProductId(request.productId(), cart).orElseThrow(()->new ResourceNotFoundException("Item"));
+        helper.validateProductAvailability(item.getProduct().getIsAvailable(),item.getProduct().getName());
+        item.setQuantity(item.getQuantity()+request.quantity());
+
+        return mapper.entityToResponse(cart);
+    }
+
+    @Transactional
+    public CartResponse decreaseCartItem(UpdateCartItemRequest request){
+        Customer customer=helper.fetchContextCustomerWithCart();
+        Cart cart=customer.getCart();
+
+        helper.validateCartEligibility(cart);
+
+        CartItem item=
+                helper.fetchValidateItemExistenceInCartByProductId(request.productId(), cart).orElseThrow(()->new ResourceNotFoundException("Item"));
+        if (request.quantity()>item.getQuantity())
+            throw new InvalidQuantityException("Invalid quantity, if you want to remove the item you can use the remove button.");
+
+        item.setQuantity(item.getQuantity()-request.quantity());
+        return mapper.entityToResponse(cart);
     }
 
     private CartResponse UpdateCartItem(Cart cart, CartItem cartItem, Integer quantityToAdd){

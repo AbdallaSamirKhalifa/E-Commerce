@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS Users (
     user_email VARCHAR(150) UNIQUE NOT NULL,
     username VARCHAR(100) UNIQUE NOT NULL,
     user_password VARCHAR(255) NOT NULL,
-    is_enabled BIT DEFAULT CAST(1 AS BIT)
+    is_enabled BOOLEAN DEFAULT TRUE
 );
 
 CREATE TABLE IF NOT EXISTS customer(
@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS product (
     prod_name VARCHAR(150) NOT NULL,
     prod_description VARCHAR(500),
     prod_price DECIMAL(10, 2),
-    is_available BIT DEFAULT CAST(1 AS BIT),
+    is_available BOOLEAN DEFAULT TRUE,
     cat_id INT -- Reference categories(cat_id)
 );
 
@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS product (
 CREATE TABLE IF NOT EXISTS cart(
     cart_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     cust_id INT NOT NULL,    -- Reference customer(cust_id)
-    is_locked BIT DEFAULT CAST(1 AS BIT)
+    is_locked BOOLEAN DEFAULT FALSE
 );
 CREATE TABLE IF NOT EXISTS cart_items (
     cart_item_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
