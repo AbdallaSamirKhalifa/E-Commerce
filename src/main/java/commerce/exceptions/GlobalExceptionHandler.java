@@ -93,7 +93,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ProductUnavailableException.class)
     public ResponseEntity<ErrorResponse> handleProductUnavailableException(ProductUnavailableException ex, HttpServletRequest request) {
 
-        var status = HttpStatus.OK;
+        var status = HttpStatus.NOT_FOUND;
         ErrorResponse errorResponse = ErrorResponse.builder().
                 timestamp(LocalDateTime.now())
                 .status(status.value())

@@ -69,7 +69,8 @@ CREATE TABLE IF NOT EXISTS Orders (
     cust_id INT NOT NULL,    -- Reference to customer(cust_id)
     order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     total_amount DECIMAL(10, 2) NOT NULL,
-    ord_note VARCHAR(500)
+    ord_note VARCHAR(500),
+    address_id INT NOT NULL -- REFERENCES customer_addresses(address_id)
 );
 
 CREATE TABLE IF NOT EXISTS order_items (
@@ -77,5 +78,7 @@ CREATE TABLE IF NOT EXISTS order_items (
     ord_id INT NOT NULL,   -- Reference to Orders.Order_ID
     prod_id INT NOT NULL, -- Reference to Products.Product_ID
     qty INT DEFAULT 1 CHECK(qty>0),
-    price DECIMAL(10, 2) NOT NULL -- Snapshot price at time of order
+    price DECIMAL(10, 2) NOT NULL -- Snapshot price at time of order,
+    subtotal DECIMAL(10,2) NOT NULL
+
 );
