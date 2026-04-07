@@ -25,7 +25,7 @@ This is a **E-Commerce Backend Platform** intended to demonstrate a clean, layer
 
 ### Planned Roadmap (Future Enhancements):
 
-- **Security:** Integration of **Spring Security** with JWT for stateless authentication.
+- **Security:** Integration of **Spring Security** with JWT for stateless authentication (DONE).
 - **Migrations:** **Liquibase** for version-controlled database schema management.
 - **Messaging:** **Spring SMTP** for automated order confirmation and registration emails (DONE).
 - **Caching:** Redis integration for product catalog performance.
@@ -37,7 +37,7 @@ This is a **E-Commerce Backend Platform** intended to demonstrate a clean, layer
 - Category Management.
 - Product Management.
 - Customer registration.
-- Securing Endpoints with basic auth.
+- Securing Endpoints with basic auth & JWT Access Tokens.
 - Using ***HATEOS*** for linking relative endpoints.
 - Sending emails with ***Spring SMTP***.
 - Sending Welcome mail after new customer registration.
@@ -45,6 +45,7 @@ This is a **E-Commerce Backend Platform** intended to demonstrate a clean, layer
 - Checkout (Place Order).
 - Sending Welcome Email after customer registration.
 - Sending confirmation email after order checkout.
+- User can login via ***BASIC AUTH*** and continue with ***JWT AUTH***.
 ### Exceptions
 
 - Using ***GlobalExceptionHandler*** for centralized exception handling 

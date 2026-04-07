@@ -8,15 +8,21 @@ import commerce.exceptions.DuplicateResourceException;
 import commerce.repositories.CustomerRepository;
 import commerce.repositories.RoleRepository;
 import commerce.repositories.UserRepository;
+import commerce.security.services.JwtService;
 import commerce.service.contract.EmailService;
 import commerce.service.contract.IAuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
 import java.util.Set;
 
 @RequiredArgsConstructor
@@ -29,6 +35,7 @@ public class AuthService implements IAuthService {
     private final EmailService gmailService;
     private final PasswordEncoder encoder;
     private final RoleRepository roleRepository;
+    private final JwtService jwtService;
 
     @Transactional
     @Override
@@ -49,6 +56,12 @@ public class AuthService implements IAuthService {
         User newUser = userRepository.save(user);
         customerRepository.save(customer);
         this.sendWelcomeMail(newUser.getEmail(),newUser.getFirstName());
+    }
+
+    @Override
+    public String login(UserDetails userDetails) {
+
+        return jwtService.generateAccessToken(userDetails);
     }
 
     private void sendWelcomeMail(String to, String name) {

@@ -22,6 +22,10 @@ spring:
           auth: true
           starttls:
             enable: true
+app:
+  security:
+    jwt:
+      access-token-expiration: 86400000 #24H for local
 ---
 spring:
   config:
