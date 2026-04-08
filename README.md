@@ -31,13 +31,27 @@ This is a **E-Commerce Backend Platform** intended to demonstrate a clean, layer
 - **Caching:** Redis integration for product catalog performance.
 
 ---
+## Docker Deployment
+### First Time
+```shell
+./scripts/buildContainer.sh
+```
+### Image created
+```shell
+docker compose up
+```
 
 ## Documentation
+### Browsing endpoints
+- After running containers deployment
+- go to your browser 
+> http://localhost:8080/swagger-ui/index.html
 ### Features
 - Category Management.
 - Product Management.
 - Customer registration.
-- Securing Endpoints with basic auth & JWT Access Tokens.
+- Customer Login
+- Securing Endpoints with JWT Access Tokens.
 - Using ***HATEOS*** for linking relative endpoints.
 - Sending emails with ***Spring SMTP***.
 - Sending Welcome mail after new customer registration.
@@ -45,7 +59,8 @@ This is a **E-Commerce Backend Platform** intended to demonstrate a clean, layer
 - Checkout (Place Order).
 - Sending Welcome Email after customer registration.
 - Sending confirmation email after order checkout.
-- User can login via ***BASIC AUTH*** and continue with ***JWT AUTH***.
+- User can login and ***JWT Access Token***.
+- OpenAPI Documentation.
 ### Exceptions
 
 - Using ***GlobalExceptionHandler*** for centralized exception handling 
