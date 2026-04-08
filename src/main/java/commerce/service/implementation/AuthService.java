@@ -1,5 +1,6 @@
 package commerce.service.implementation;
 
+import commerce.dto.request.LoginRequest;
 import commerce.dto.request.RegistrationRequest;
 import commerce.entities.Customer;
 import commerce.entities.Role;
@@ -11,6 +12,7 @@ import commerce.repositories.UserRepository;
 import commerce.security.services.JwtService;
 import commerce.service.contract.EmailService;
 import commerce.service.contract.IAuthService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -36,6 +38,7 @@ public class AuthService implements IAuthService {
     private final PasswordEncoder encoder;
     private final RoleRepository roleRepository;
     private final JwtService jwtService;
+    private final AuthenticationManager authenticationManager;
 
     @Transactional
     @Override
@@ -59,9 +62,12 @@ public class AuthService implements IAuthService {
     }
 
     @Override
-    public String login(UserDetails userDetails) {
-
-        return jwtService.generateAccessToken(userDetails);
+    public String login(LoginRequest loginRequest) {
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                loginRequest.username(),
+                loginRequest.password()
+        ));
+        return jwtService.generateAccessToken((UserDetails) Objects.requireNonNull(authentication.getPrincipal()));
     }
 
     private void sendWelcomeMail(String to, String name) {

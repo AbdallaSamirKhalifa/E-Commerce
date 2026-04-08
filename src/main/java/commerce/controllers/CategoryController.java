@@ -4,6 +4,7 @@ import commerce.controllers.assemblers.CategoryModelAssembler;
 import commerce.dto.request.CategoryRequest;
 import commerce.dto.response.CategoryResponse;
 import commerce.service.contract.ICategoryService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
@@ -19,6 +20,7 @@ public class CategoryController {
     private final ICategoryService categoryService;
     private final CategoryModelAssembler assembler;
 
+    @SecurityRequirements
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{id}")
     public ResponseEntity<EntityModel<CategoryResponse>> getCategoryById(@PathVariable("id") Integer catId) {
@@ -34,6 +36,7 @@ public class CategoryController {
     }
 
 
+    @SecurityRequirements
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/all")
     public ResponseEntity<CollectionModel<EntityModel<CategoryResponse>>> getAllCategories() {
@@ -43,6 +46,7 @@ public class CategoryController {
                                 getAllCategories()));
     }
 
+    @SecurityRequirements
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/allByPage")
     public ResponseEntity<CollectionModel<EntityModel<CategoryResponse>>> getAllCategoriesByPage(

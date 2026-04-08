@@ -4,6 +4,7 @@ import commerce.controllers.assemblers.ProductModelAssembler;
 import commerce.dto.request.ProductRequest;
 import commerce.dto.response.ProductResponse;
 import commerce.service.contract.IProductService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
@@ -19,6 +20,7 @@ public class ProductController {
     private final IProductService productService;
     private final ProductModelAssembler assembler;
 
+    @SecurityRequirements
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{prodId}")
     public ResponseEntity<EntityModel<ProductResponse>> getProductById(@PathVariable Integer prodId) {
@@ -39,6 +41,7 @@ public class ProductController {
                 );
     }
 
+    @SecurityRequirements
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/all")
     public ResponseEntity<CollectionModel<EntityModel<ProductResponse>>> getAllProducts() {
@@ -50,6 +53,7 @@ public class ProductController {
         );
     }
 
+    @SecurityRequirements
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/allByPage")
     public ResponseEntity<CollectionModel<EntityModel<ProductResponse>>> getAllProductsByPage(
