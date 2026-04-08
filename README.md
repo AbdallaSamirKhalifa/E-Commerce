@@ -82,6 +82,9 @@ docker compose up
 ### Controllers
 #### Assemblers
 - Using ***Spring HATEOS*** to add links to relevant operations.
+
+### Database
+- Since PostgreSQL gives you the choice of creating foreign key indexes, we created foreign key indexes on the most selective columns. 
 ---
 ### Diagrams
 #### Basic Auth flow
