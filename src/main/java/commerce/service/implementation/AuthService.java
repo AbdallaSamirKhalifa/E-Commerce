@@ -23,6 +23,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.ResourceAccessException;
 
 import java.util.Objects;
 import java.util.Set;
@@ -48,7 +49,8 @@ public class AuthService implements IAuthService {
             throw new DuplicateResourceException("Email already exists.");
         if (userRepository.isUsernameExists(request.username()))
             throw new DuplicateResourceException("Username already exists.");
-        Role role = roleRepository.findRoleByName("CUSTOMER");
+        Role role = roleRepository.findRoleByName("ROLE_CUSTOMER")
+                .orElseThrow(()->new ResourceAccessException("ROLE_CUSTOMER"));
         User user = User.builder()
                 .firstName(request.firstName())
                 .lastName(request.lastName())
