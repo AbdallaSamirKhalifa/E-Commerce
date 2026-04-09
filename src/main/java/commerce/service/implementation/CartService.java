@@ -12,6 +12,7 @@ import commerce.exceptions.LockedCartException;
 import commerce.exceptions.ResourceNotFoundException;
 import commerce.mappers.implementation.CartMapper;
 import commerce.repositories.CartItemRepository;
+import commerce.repositories.CartRepository;
 import commerce.service.contract.ICartService;
 import commerce.service.util.CartHelper;
 import lombok.RequiredArgsConstructor;
@@ -25,9 +26,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CartService implements ICartService {
     private final CartItemRepository cartItemRepository;
+    private final CartRepository cartRepository;
     private final CartHelper helper;
     private final CartMapper mapper;
-
     @Override
     @Transactional
     public CartResponse addItemToCart(AddToCartRequest request) {
@@ -117,19 +118,23 @@ public class CartService implements ICartService {
     }
 
     @Transactional
-    public void clearCart() {
-        Customer customer = helper.fetchContextCustomerWithCart();
-        Cart cart = customer.getCart();
+    public void clearCart(Cart ...carts) {
+        Cart cart;
+        if (carts == null || carts.length<1){
+            Customer customer = helper.fetchContextCustomerWithCart();
+             cart = customer.getCart();
+        }else cart=carts[0];
         if (cart == null)
             throw new ResourceNotFoundException("Cart");
-        clearCart(cart);
-    }
-
-    @Transactional
-    public void clearCart(Cart cart) {
         cartItemRepository.deleteAllItemsInBatch(cart.getCartId());
         cart.setIsLocked(false);
     }
+
+    @Override
+    public void saveAndFlush(Cart cart) {
+        this.cartRepository.saveAndFlush(cart);
+    }
+
 
     private CartResponse updateCartItem(Cart cart, CartItem cartItem, Integer quantityToAdd) {
         helper.validateProductAvailability(cartItem.getProduct().getIsAvailable(), cartItem.getProduct().getName());

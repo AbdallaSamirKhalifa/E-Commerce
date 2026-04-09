@@ -8,9 +8,8 @@ import commerce.exceptions.LockedCartException;
 import commerce.exceptions.ProductUnavailableException;
 import commerce.exceptions.ResourceNotFoundException;
 import commerce.mappers.contracts.IOrderMapper;
-import commerce.repositories.CartRepository;
-import commerce.repositories.CustomerAddressRepository;
 import commerce.repositories.OrderRepository;
+import commerce.service.contract.ICartService;
 import commerce.service.contract.IOrderService;
 import commerce.service.util.OrderHelper;
 import lombok.RequiredArgsConstructor;
@@ -27,14 +26,13 @@ import java.util.stream.Collectors;
 public class OrderService implements IOrderService {
     private final OrderRepository orderRepository;
     private final OrderHelper helper;
-    private final CartRepository cartRepository;
-    private final CustomerAddressRepository customerAddressRepository;
     private final IOrderMapper mapper;
-    private final CartService cartService;
+    private final ICartService cartService;
 
+    @Transactional
     @Override
     public OrderResponse checkout(OrderRequest request) {
-        Customer customer = helper.getContextCustomerWithCart();
+        Customer customer = helper.getContextCustomerWithAddressesAndCart();
 
         OrderResponse response = placeOrder(request, customer);
         helper.sendOrderConfirmationEmail(customer.getUser().getEmail(), response.totalAmount(), customer.getUser().getFirstName());
@@ -45,8 +43,10 @@ public class OrderService implements IOrderService {
     public OrderResponse placeOrder(OrderRequest request, Customer customer) {
         Cart cart = customer.getCart();
 
-        CustomerAddress address = customerAddressRepository.findById(request.addressId()).
-                orElseThrow(() -> new ResourceNotFoundException("Address", request.addressId()));
+        CustomerAddress address = customer.getAddresses().stream().filter
+                (
+                        add -> add.getAddressId().equals(request.addressId())).findFirst().orElseThrow(() ->
+                new ResourceNotFoundException("Address", request.addressId()));
 
         if (cart == null || cart.getCartItems().isEmpty())
             throw new EmptyCartException();
@@ -54,7 +54,7 @@ public class OrderService implements IOrderService {
             throw new LockedCartException();
 
         cart.setIsLocked(true);
-        cartRepository.saveAndFlush(cart);
+        cartService.saveAndFlush(cart);
         Set<OrderItem> orderItems = createOrderItems(cart.getCartItems());
         Order order = Order.builder().customer(customer).
                 orderDate(LocalDateTime.now()).
