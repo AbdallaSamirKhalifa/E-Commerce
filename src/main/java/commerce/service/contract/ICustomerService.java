@@ -6,4 +6,5 @@ public interface ICustomerService {
     Customer getByUserId(Integer userId);
     Customer fetchWithCartByUserId(Integer userId);
 
+    Customer fetchWithCartAndAddressesByUserId(Integer userId);
 }

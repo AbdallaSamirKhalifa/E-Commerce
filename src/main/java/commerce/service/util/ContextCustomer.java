@@ -21,6 +21,10 @@ public class ContextCustomer {
         User currentUser = getContextUser();
         return customerService.fetchWithCartByUserId(currentUser.getUserId());
     }
+    public Customer getContextCustomerWithAddressesAndCartInfo(){
+        User currentUser = getContextUser();
+        return customerService.fetchWithCartAndAddressesByUserId(currentUser.getUserId());
+    }
     private User getContextUser(){
         return ((SecurityUser)
                 SecurityContextHolder.getContext().

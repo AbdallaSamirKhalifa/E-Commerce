@@ -21,4 +21,9 @@ public class CustomerService implements ICustomerService {
         return customerRepository.fetchWithCartAndCartItemsAndProductInfoByUserId(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Customer"));
     }
+    @Override
+    public Customer fetchWithCartAndAddressesByUserId(Integer userId){
+        return customerRepository.fetchWithAddressesAndCartAndCartItemsAndProductInfoByUserId(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer"));
+    }
 }

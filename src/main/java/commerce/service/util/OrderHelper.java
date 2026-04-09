@@ -12,8 +12,8 @@ import java.math.BigDecimal;
 public class OrderHelper {
     private final ContextCustomer contextCustomer;
     private final EmailService emailService;
-    public Customer getContextCustomerWithCart(){
-      return contextCustomer.getContextCustomerWithCartInfo();
+    public Customer getContextCustomerWithAddressesAndCart(){
+      return contextCustomer.getContextCustomerWithAddressesAndCartInfo();
     }
     public void sendOrderConfirmationEmail(String to, BigDecimal total, String customerName){
         emailService.sendEmailAsync(to,"Order Confirmation", String.

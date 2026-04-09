@@ -20,4 +20,14 @@ public interface CustomerRepository extends CrudRepository<Customer, Integer> {
         WHERE c.user.id = :userId
     """)
     Optional<Customer> fetchWithCartAndCartItemsAndProductInfoByUserId(Integer userId);
+
+    @Query("""
+        SELECT c FROM Customer c
+        LEFT JOIN FETCH c.addresses
+        LEFT JOIN FETCH c.cart cr
+        LEFT JOIN FETCH cr.cartItems ci
+        LEFT JOIN FETCH ci.product p
+        WHERE c.user.id = :userId
+    """)
+    Optional<Customer> fetchWithAddressesAndCartAndCartItemsAndProductInfoByUserId(Integer userId);
 }
