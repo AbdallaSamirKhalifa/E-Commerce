@@ -27,6 +27,7 @@ public class AddressMapper implements IAddressMapper {
     @Override
     public CustomerAddress responseToEntity(AddressResponse address) {
         return CustomerAddress.builder().label(address.label())
+                .addressId(address.id())
                 .city(address.city())
                 .street(address.street())
                 .notes(address.notes()).build();
