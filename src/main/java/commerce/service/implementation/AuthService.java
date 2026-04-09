@@ -54,6 +54,7 @@ public class AuthService implements IAuthService {
                 .lastName(request.lastName())
                 .email(request.email())
                 .username(request.username())
+                .isEnabled(true)
                 .password(encoder.encode(request.password())).roles(Set.of(role)).build();
         Customer customer = Customer.builder().user(user).build();
         User newUser = userRepository.save(user);
