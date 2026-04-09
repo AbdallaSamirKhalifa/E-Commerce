@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS cart_item (
     cart_item_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     prod_id INT NOT NULL  References product(prod_id),
     qty INT DEFAULT 1 CHECK(qty>0),
-    cart_id INT UNIQUE NOT NULL REFERENCES cart(cart_id)
+    cart_id INT NOT NULL REFERENCES cart(cart_id)
 );
     CREATE INDEX idx_cart_item_prod_id ON cart_item(prod_id);
 
