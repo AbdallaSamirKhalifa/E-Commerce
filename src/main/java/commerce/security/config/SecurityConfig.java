@@ -23,6 +23,7 @@ public class SecurityConfig {
     private final JwtFilter jwtFilter;
     private static final String[] OPEN_API_URLS={
             "/v3/api-docs",
+            "/v3/api-docs.yaml",
             "/v3/api-docs/**",
             "/swagger-ui/**",
             "/swagger-ui.html",

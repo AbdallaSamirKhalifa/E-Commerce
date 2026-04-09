@@ -269,104 +269,114 @@ sequenceDiagram
     autonumber
     title E-Commerce: Checkout & Place Order 
 
-    participant Client
-    participant Controller as OrderController
-    participant Service as OrderService
-    participant CartService as CartService
-    participant Helper as CartHelper
-    participant DB as Database Repositories
-    participant EmailService as EmailService
+  participant Client
+  participant Controller as OrderController
+  participant Service as OrderService
+  participant CartService as CartService
+  participant Helper as OrderHelper
+  participant DB as Database Repositories
+  participant EmailService as EmailService
 
-    Client->>Controller: POST /api/orders/checkout (OrderRequest)
-    activate Controller
-    
-    Controller->>Service: checkout(request)
-    activate Service
+  Client->>Controller: POST /api/orders/checkout (OrderRequest)
+  activate Controller
+%% Transactional checkout starts
+  Controller->>Service: checkout(request)
+  Note over Service: [Transaction Start]
+  activate Service
 
-    %% Fetch Context
-    Service->>Helper: getContextCustomerWithCart()
-    activate Helper
-    Note right of Helper: Fetches SecurityUser & Deep Fetches Customer Graph
-    Helper-->>Service: Customer Entity
-    deactivate Helper
+%% Fetch Context
+  Service->>Helper: getContextCustomerWithAddressesAndCart()
+  activate Helper
+  Note right of Helper: Fetches SecurityUser & Deep Fetches Customer Graph
+  Helper-->>Service: Customer Entity
+  deactivate Helper
 
-    %% Transactional placeOrder starts
-    Service->>Service: placeOrder(request, customer)
-    activate Service
-    Note over Service: [Transaction Start]
+%% Transactional placeOrder starts
+  Service->>Service: placeOrder(request, customer)
+  activate Service
 
-    %% Guard 1: Address
-    Service->>DB: customerAddressRepository.findById(addressId)
-    
-    Note over Service: Guard 1: Address Exists?
-    alt Address Not Found
-        DB-->>Service: Optional.empty()
-        Note over Service: [Transaction Rollback]
-        Service-->>Controller: throw ResourceNotFoundException <br/> (GlobalExceptionHandler)
-        Controller-->>Client: 404 Not Found
-    end
-    DB-->>Service: CustomerAddress Entity
 
-    %% Guard 2: Empty Cart
-    Note over Service: Guard 2: Is Cart Empty?
-    alt cart == null || cartItems.isEmpty()
-        Note over Service: [Transaction Rollback]
-        Service-->>Controller: throw EmptyCartException <br/> (GlobalExceptionHandler)
-        Controller-->>Client: 400 Bad Request
-    end
+%% Guard 1: Address
+  Service->>Service: Stream Searching for Customer address.
 
-    %% Guard 3: Locked Cart
-    Note over Service: Guard 3: Is Cart Locked?
-    alt cart.getIsLocked() == true
-        Note over Service: [Transaction Rollback]
-        Service-->>Controller: throw LockedCartException <br/> (GlobalExceptionHandler)
-        Controller-->>Client: 409 Conflict
-    end
+  Note over Service: Guard 1: Address Exists?
+  alt Address Not Found
+    Service-->>Service: Optional.empty()
+    Note over Service: [Transaction Rollback]
+    Service-->>Controller: throw ResourceNotFoundException <br/> (GlobalExceptionHandler)
+    Controller-->>Client: 404 Not Found
+  end
 
-    %% Lock Cart
-    Service->>DB: cartRepository.saveAndFlush(cart) (isLocked = true)
-    
-    %% Create Order Items & Guard 4: Availability
-    Service->>Service: createOrderItems(cart.getCartItems())
-    
-    Note over Service: Guard 4: Product Available?
-    alt Product.getIsAvailable() == false
-        Note over Service: [Transaction Rollback]
-        Service-->>Controller: throw ProductUnavailableException <br/> (GlobalExceptionHandler)
-        Controller-->>Client: 404 Not Found
-    end
-    Note right of Service: Calculates subtotals, creates OrderItems
 
-    %% Build and Save Order
-    Service->>Service: Build Order (set address, sum subtotals)
-    Service->>DB: orderRepository.saveAndFlush(order)
-    DB-->>Service: Saved Order Entity
-    
-    %% Clear Cart
-    Service->>CartService: clearCart(cart)
-    activate CartService
-    Note right of CartService: Empties cart items (batch deletion)
-    CartService-->>Service: return
-    deactivate CartService
+%% Guard 2: Empty Cart
+  Note over Service: Guard 2: Is Cart Empty?
+  alt cart == null || cartItems.isEmpty()
+    Note over Service: [Transaction Rollback]
+    Service-->>Controller: throw EmptyCartException <br/> (GlobalExceptionHandler)
+    Controller-->>Client: 400 Bad Request
+  end
 
-    Service-->>Service: OrderResponse (Mapped DTO)
-    Note over Service: [Transaction Commit]
-    deactivate Service
+%% Guard 3: Locked Cart
+  Note over Service: Guard 3: Is Cart Locked?
+  alt cart.getIsLocked() == true
+    Note over Service: [Transaction Rollback]
+    Service-->>Controller: throw LockedCartException <br/> (GlobalExceptionHandler)
+    Controller-->>Client: 409 Conflict
+  end
 
-    %% Send Email (Outside Transaction)
-    Service->>Helper: sendOrderConfirmationEmail(...)
-    activate Helper
-    Helper-)EmailService: sendEmailAsync(to, subject, body)
-    Note right of EmailService: ⚡ Asynchronous Execution (Fire & Forget)
-    Helper-->>Service: return (Non-blocking)
-    deactivate Helper
+%% Lock Cart
+  Service->>CartService: cartService.saveAndFlush(cart) (isLocked = true)
+  CartService ->>DB: saveAndFlush
+%% Create Order Items & Guard 4: Availability
+  Service->>Service: createOrderItems(cart.getCartItems())
 
-    Service-->>Controller: OrderResponse DTO
-    deactivate Service
-    
-    Controller-->>Client: 200 OK
-    deactivate Controller
+  Note over Service: Guard 4: Product Available?
+  alt Product.getIsAvailable() == false
+    Note over Service: [Transaction Rollback]
+    Service-->>Controller: throw ProductUnavailableException <br/> (GlobalExceptionHandler)
+    Controller-->>Client: 404 Not Found
+  end
+  Note right of Service: Calculates subtotals, creates OrderItems
+
+%% Build and Save Order
+  Service->>Service: Build Order (set address, sum subtotals)
+  Service->>DB: orderRepository.saveAndFlush(order)
+  DB-->>Service: Saved Order Entity
+
+%% Clear Cart
+  Service->>CartService: clearCart(cart)
+  activate CartService
+  Note right of CartService: Empties cart items (batch deletion)
+  CartService-->>Service: return
+  deactivate CartService
+
+  Service-->>Service: OrderResponse (Mapped DTO)
+  Note over Service: [Transaction Commit]
+  deactivate Service
+
+%% Send Email (Outside Transaction)
+  Service->>Helper: sendOrderConfirmationEmail(...)
+  activate Helper
+  Helper-)EmailService: sendEmailAsync(to, subject, body)
+  Note right of EmailService: ? Asynchronous Execution (Fire & Forget)
+  Helper-->>Service: return (Non-blocking)
+  deactivate Helper
+
+  Service-->>Controller: OrderResponse DTO
+  deactivate Service
+
+  Controller-->>Client: 201 CREATED
+  deactivate Controller
 ```
+
+## OpenAPI Documentation
+### Documentation File
+[View the OpenAPI Specification File](OpenAPI/api-docs.yaml)
+
+### Swagger Images
+
+![Swagger UI Screenshot](OpenAPI/Swagger-1.png)
+![Swagger UI Screenshot](OpenAPI/Swagger-2.png)
 ## Contact & Contribution
 
 - **Author:** Abdalla Samir Khalifa

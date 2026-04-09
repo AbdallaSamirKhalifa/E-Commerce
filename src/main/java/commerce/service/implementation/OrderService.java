@@ -41,12 +41,12 @@ public class OrderService implements IOrderService {
 
     @Transactional
     public OrderResponse placeOrder(OrderRequest request, Customer customer) {
-        Cart cart = customer.getCart();
 
         CustomerAddress address = customer.getAddresses().stream().filter
                 (
                         add -> add.getAddressId().equals(request.addressId())).findFirst().orElseThrow(() ->
                 new ResourceNotFoundException("Address", request.addressId()));
+        Cart cart = customer.getCart();
 
         if (cart == null || cart.getCartItems().isEmpty())
             throw new EmptyCartException();
