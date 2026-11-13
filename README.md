@@ -382,6 +382,6 @@ sequenceDiagram
 - **Author:** Abdullah Samir Khalifah
 - **Role:** Systems Analyst & Backend Developer
 - **Contact**:
-  - GitHub: [@AbdullahSamirKhalifah](https://github.com/AbdullahSamirKhalifah)
+  - GitHub: [@AbdallaSamirKhalifa](https://github.com/AbdallaSamirKhalifa)
   - Email: [abdallasamirkhalifa@gmail.com](abdallasamirkhalifa@gmail.com)
-  - Linkedin: [Abdullah Khalifah](https://linkedin.com/in/abdullah-khalifah)
+  - Linkedin: [Abdullah Khalifah](https://linkedin.com/in/abdalla-khalifa)
