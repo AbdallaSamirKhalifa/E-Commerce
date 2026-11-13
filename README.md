@@ -379,9 +379,9 @@ sequenceDiagram
 ![Swagger UI Screenshot](OpenAPI/Swagger-2.png)
 ## Contact & Contribution
 
-- **Author:** Abdalla Samir Khalifa
+- **Author:** Abdullah Samir Khalifah
 - **Role:** Systems Analyst & Backend Developer
 - **Contact**:
-  - GitHub: [@AbdallaSamirKhalifa](https://github.com/AbdallaSamirKhalifa)
+  - GitHub: [@AbdullahSamirKhalifah](https://github.com/AbdullahSamirKhalifah)
   - Email: [abdallasamirkhalifa@gmail.com](abdallasamirkhalifa@gmail.com)
-  - Linkedin: [Abdalla Khalifa](https://linkedin.com/in/abdalla-khalifa)
+  - Linkedin: [Abdullah Khalifah](https://linkedin.com/in/abdullah-khalifah)
